@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
+<title>◈ ◈ ◈</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=VT323&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --void: #0d0821;
+    --void-2: #1a1035;
+    --hotpink: #ff5fa8;
+    --magenta: #d63fc4;
+    --cyan: #4de8e0;
+    --violet: #8b5fe8;
+    --sun1: #ffcf6b;
+    --sun2: #ff6f9e;
+  }
+
+  *{ box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  html, body{
+    margin:0;
+    padding:0;
+    width:100%;
+    height:100%;
+    height: 100dvh;
+    background: var(--void);
+    overflow:hidden;
+    font-family: 'Poppins', sans-serif;
+  }
+
+  .stage{
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    overflow: hidden;
+    background:
+      radial-gradient(ellipse 120% 60% at 50% 0%, #2a1550 0%, var(--void) 55%);
+  }
+
+  /* stars */
+  .stars{
+    position:absolute;
+    inset:0;
+    background-image:
+      radial-gradient(1px 1px at 12% 18%, rgba(255,255,255,0.8), transparent),
+      radial-gradient(1px 1px at 82% 12%, rgba(255,255,255,0.7), transparent),
+      radial-gradient(1.5px 1.5px at 32% 8%, rgba(255,255,255,0.9), transparent),
+      radial-gradient(1px 1px at 68% 22%, rgba(255,255,255,0.6), transparent),
+      radial-gradient(1px 1px at 90% 30%, rgba(255,255,255,0.7), transparent),
+      radial-gradient(1.5px 1.5px at 5% 35%, rgba(255,255,255,0.6), transparent),
+      radial-gradient(1px 1px at 55% 5%, rgba(255,255,255,0.9), transparent);
+    background-repeat: no-repeat;
+    animation: twinkle 3.5s ease-in-out infinite;
+  }
+  @keyframes twinkle{
+    0%, 100%{ opacity: 0.7; }
+    50%{ opacity: 1; }
+  }
+
+  /* sun */
+  .sun{
+    position:absolute;
+    left: 50%;
+    top: 30%;
+    width: 42vh;
+    height: 42vh;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    background: linear-gradient(180deg, var(--sun1) 0%, var(--sun2) 55%, var(--magenta) 100%);
+    box-shadow: 0 0 90px 10px rgba(255, 111, 158, 0.45);
+    overflow: hidden;
+  }
+  .sun::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background: repeating-linear-gradient(
+      to bottom,
+      transparent 0 8%,
+      var(--void) 8% 11%,
+      transparent 11% 19%,
+      var(--void) 19% 23%,
+      transparent 23% 34%,
+      var(--void) 34% 39%,
+      transparent 39% 55%,
+      var(--void) 55% 62%,
+      transparent 62% 100%
+    );
+  }
+
+  /* horizon grid */
+  .grid-floor{
+    position:absolute;
+    left:0; right:0;
+    bottom:0;
+    height: 46%;
+    background: linear-gradient(180deg, rgba(13,8,33,0) 0%, var(--void) 92%);
+    overflow: hidden;
+    perspective: 220px;
+    perspective-origin: 50% 0%;
+  }
+  .grid-floor::before{
+    content:"";
+    position:absolute;
+    left:-50%;
+    right:-50%;
+    top:0;
+    bottom:-40%;
+    background-image:
+      repeating-linear-gradient(90deg, var(--cyan) 0 2px, transparent 2px 60px),
+      repeating-linear-gradient(0deg, var(--cyan) 0 2px, transparent 2px 60px);
+    background-size: 60px 60px;
+    opacity: 0.55;
+    transform: rotateX(78deg);
+    transform-origin: 50% 0%;
+    animation: scroll-grid 3.5s linear infinite;
+  }
+  @keyframes scroll-grid{
+    from{ background-position: 0 0, 0 0; }
+    to{ background-position: 0 60px, 0 60px; }
+  }
+  .horizon-line{
+    position:absolute;
+    left:0; right:0;
+    top:0;
+    height: 2px;
+    background: var(--cyan);
+    box-shadow: 0 0 12px 2px var(--cyan);
+    opacity: 0.7;
+  }
+
+  /* scanlines + vignette */
+  .scanlines{
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+    background: repeating-linear-gradient(
+      to bottom,
+      rgba(0,0,0,0.15) 0px,
+      rgba(0,0,0,0.15) 1px,
+      transparent 1px,
+      transparent 3px
+    );
+    mix-blend-mode: multiply;
+    opacity: 0.35;
+    z-index: 5;
+  }
+  .vignette{
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+    background: radial-gradient(ellipse 90% 90% at 50% 50%, transparent 45%, rgba(6,3,18,0.75) 100%);
+    z-index: 4;
+  }
+
+  /* content */
+  .content{
+    position:relative;
+    z-index: 6;
+    height:100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding: 4vh 5vw;
+  }
+
+  .panel{
+    width: min(560px, 92vw);
+    max-height: 84vh;
+    overflow-y: auto;
+    text-align:center;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(77,232,224,0.35) transparent;
+  }
+  .panel::-webkit-scrollbar{ width:5px; }
+  .panel::-webkit-scrollbar-thumb{ background: rgba(77,232,224,0.3); border-radius:4px; }
+
+  .title{
+    font-family: 'VT323', monospace;
+    font-size: clamp(2.4rem, 9vw, 3.6rem);
+    letter-spacing: 0.12em;
+    margin: 0 0 0.3rem;
+    color: #fff;
+    text-shadow:
+      2px 0 0 var(--cyan),
+      -2px 0 0 var(--hotpink);
+    animation: glitch 4s infinite;
+  }
+  @keyframes glitch{
+    0%, 92%, 100%{ text-shadow: 2px 0 0 var(--cyan), -2px 0 0 var(--hotpink); transform: translate(0,0); }
+    93%{ text-shadow: -3px 0 0 var(--cyan), 3px 0 0 var(--hotpink); transform: translate(-1px, 1px); }
+    95%{ text-shadow: 3px 1px 0 var(--cyan), -3px -1px 0 var(--hotpink); transform: translate(1px, -1px); }
+    97%{ text-shadow: 2px 0 0 var(--cyan), -2px 0 0 var(--hotpink); transform: translate(0,0); }
+  }
+
+  .subtitle{
+    font-family: 'VT323', monospace;
+    font-size: 1.1rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--cyan);
+    opacity: 0.85;
+    margin: 0 0 2rem;
+  }
+
+  .frame{
+    border: 1px solid rgba(77,232,224,0.4);
+    background: rgba(26,16,53,0.55);
+    backdrop-filter: blur(4px);
+    padding: 2.2rem 1.8rem;
+    border-radius: 2px;
+    box-shadow:
+      0 0 0 1px rgba(255,95,168,0.15),
+      0 20px 60px rgba(0,0,0,0.55);
+  }
+
+  .message{
+    font-family: 'Poppins', sans-serif;
+    font-weight: 300;
+    font-size: 1.05rem;
+    line-height: 1.85;
+    color: #f1e9ff;
+    white-space: pre-wrap;
+    min-height: 2em;
+  }
+
+  /* ↓↓↓ Edita este texto por el mensaje que quieras enviar ↓↓↓ */
+  .message::before{
+    content: "Escribe aquí tu mensaje secreto...\A Reemplaza este texto en el archivo,\A dentro de la clase .message";
+    white-space: pre-wrap;
+  }
+
+  .diamonds{
+    display:flex;
+    justify-content:center;
+    gap: 10px;
+    margin-top: 1.8rem;
+    opacity: 0.7;
+  }
+  .diamonds span{
+    width: 6px;
+    height: 6px;
+    background: var(--hotpink);
+    transform: rotate(45deg);
+  }
+  .diamonds span:nth-child(2){ background: var(--cyan); }
+  .diamonds span:nth-child(3){ background: var(--sun1); }
+
+  .back-btn{
+    position: fixed;
+    top: calc(18px + env(safe-area-inset-top, 0px));
+    left: calc(18px + env(safe-area-inset-left, 0px));
+    z-index: 10;
+    font-family: 'VT323', monospace;
+    font-size: 1rem;
+    letter-spacing: 0.08em;
+    color: var(--cyan);
+    background: rgba(13,8,33,0.5);
+    border: 1px solid rgba(77,232,224,0.4);
+    padding: 8px 14px;
+    text-decoration:none;
+    border-radius: 2px;
+    display:flex;
+    align-items:center;
+    gap: 6px;
+    transition: all 0.3s ease;
+  }
+  .back-btn:hover{
+    background: rgba(77,232,224,0.15);
+    box-shadow: 0 0 14px rgba(77,232,224,0.4);
+  }
+
+  @media (max-width: 480px){
+    .frame{ padding: 1.8rem 1.3rem; }
+    .message{ font-size: 0.98rem; }
+    .title{ letter-spacing: 0.08em; }
+    .subtitle{ font-size: 0.95rem; letter-spacing: 0.22em; }
+  }
+
+  @media (max-height: 620px){
+    .sun{ top: 22%; width: 34vh; height: 34vh; }
+    .title{ font-size: clamp(2rem, 8vw, 2.8rem); }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .title, .stars, .grid-floor::before{ animation: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<a href="index.html" class="back-btn">← volver</a>
+
+<div class="stage">
+  <div class="stars"></div>
+  <div class="sun"></div>
+  <div class="grid-floor">
+    <div class="horizon-line"></div>
+  </div>
+  <div class="scanlines"></div>
+  <div class="vignette"></div>
+
+  <div class="content">
+    <div class="panel">
+      <h1 class="title">secreto</h1>
+      <p class="subtitle">nivel desbloqueado</p>
+      <div class="frame">
+        <p class="message"></p>
+        <div class="diamonds"><span></span><span></span><span></span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

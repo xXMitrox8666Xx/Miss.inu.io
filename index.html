@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
+<title>para ti</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Caveat:wght@500;600&family=Nunito:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --night: #171b26;
+    --night-2: #232a3b;
+    --snow: #f2ede4;
+    --snow-dim: #cfc9bd;
+    --blush: #c9989a;
+    --blush-soft: #e3c3bf;
+    --gold: #cbb389;
+  }
+
+  *{ box-sizing: border-box; }
+
+  html, body{
+    margin:0;
+    padding:0;
+    width:100%;
+    height:100%;
+    height: 100dvh;
+    background: var(--night);
+    overflow:hidden;
+    font-family: 'Nunito', sans-serif;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  .scene{
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    overflow: hidden;
+  }
+
+  .bg{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    object-fit: cover;
+    filter: saturate(0.85) brightness(0.62) contrast(1.05);
+    transform: scale(1.03);
+  }
+
+  .bg-veil{
+    position:absolute;
+    inset:0;
+    background:
+      radial-gradient(ellipse at 50% 30%, rgba(23,27,38,0.15) 0%, rgba(23,27,38,0.72) 78%),
+      linear-gradient(180deg, rgba(17,20,28,0.55) 0%, rgba(17,20,28,0.25) 35%, rgba(17,20,28,0.75) 100%);
+  }
+
+  /* --- snow --- */
+  .snowfall{
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+    overflow:hidden;
+  }
+  .flake{
+    position:absolute;
+    top:-5%;
+    background: var(--snow);
+    border-radius:50%;
+    opacity:0.85;
+    animation-name: fall;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    filter: blur(0.2px);
+  }
+  @keyframes fall{
+    0%{ transform: translateY(-5vh) translateX(0); }
+    100%{ transform: translateY(110vh) translateX(var(--drift, 30px)); }
+  }
+
+  /* --- content --- */
+  .content{
+    position:relative;
+    z-index: 3;
+    height:100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding: 4vh 5vw;
+  }
+
+  .letter{
+    position:relative;
+    width: min(560px, 92vw);
+    max-height: 84vh;
+    overflow-y: auto;
+    background: linear-gradient(180deg, rgba(35,42,59,0.55), rgba(23,27,38,0.72));
+    border: 1px solid rgba(242,237,228,0.14);
+    border-radius: 4px;
+    padding: 3.2rem 2.6rem 2.6rem;
+    backdrop-filter: blur(6px);
+    box-shadow: 0 30px 80px rgba(0,0,0,0.55);
+    animation: rise 1.4s ease-out 0.2s both;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(242,237,228,0.25) transparent;
+  }
+
+  .letter::-webkit-scrollbar{ width:5px; }
+  .letter::-webkit-scrollbar-thumb{ background: rgba(242,237,228,0.2); border-radius:4px; }
+
+  @keyframes rise{
+    from{ opacity:0; transform: translateY(26px); }
+    to{ opacity:1; transform: translateY(0); }
+  }
+
+  .eyebrow{
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 400;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-size: 0.72rem;
+    color: var(--blush-soft);
+    text-align:center;
+    margin: 0 0 1.4rem;
+    opacity: 0.85;
+  }
+
+  .cats-wrap{
+    display:flex;
+    justify-content:center;
+    margin-bottom: 1.6rem;
+  }
+
+  .cats{
+    width: 128px;
+    filter: drop-shadow(0 8px 18px rgba(0,0,0,0.45));
+    animation: sway 5s ease-in-out infinite;
+  }
+
+  @keyframes sway{
+    0%, 100%{ transform: rotate(-1.2deg) translateY(0); }
+    50%{ transform: rotate(1.2deg) translateY(-4px); }
+  }
+
+  .divider{
+    width: 46px;
+    height:1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin: 0 auto 1.8rem;
+    opacity:0.7;
+  }
+
+  .message{
+    font-family: 'Caveat', cursive;
+    font-size: 1.55rem;
+    line-height: 1.55;
+    color: var(--snow);
+    text-align:center;
+    white-space: pre-wrap;
+    min-height: 2em;
+  }
+
+  /* ↓↓↓ Edita este texto por el mensaje que quieras enviar ↓↓↓ */
+  .message::before{
+    content: "Escribe aquí tu mensaje...\A Puedes reemplazar este texto directamente\A en el archivo, dentro de la clase .message";
+    white-space: pre-wrap;
+  }
+
+  .signature{
+    margin-top: 1.8rem;
+    text-align:center;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 0.85rem;
+    color: var(--snow-dim);
+    opacity: 0.75;
+    letter-spacing: 0.04em;
+  }
+
+  /* --- music control --- */
+  .music-btn{
+    position:fixed;
+    bottom: 22px;
+    right: 22px;
+    z-index: 10;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    border: 1px solid rgba(242,237,228,0.25);
+    background: rgba(23,27,38,0.55);
+    backdrop-filter: blur(6px);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+  }
+  .music-btn:hover{
+    border-color: var(--blush-soft);
+    transform: translateY(-2px);
+  }
+  .music-btn svg{
+    width: 18px;
+    height: 18px;
+    fill: var(--snow);
+  }
+  .music-btn .bars{
+    display:flex;
+    align-items:flex-end;
+    gap: 3px;
+    height: 16px;
+  }
+  .music-btn .bars span{
+    width: 3px;
+    background: var(--snow);
+    border-radius: 2px;
+    animation: bar 1s ease-in-out infinite;
+  }
+  .music-btn .bars span:nth-child(1){ height: 40%; animation-delay: 0s; }
+  .music-btn .bars span:nth-child(2){ height: 100%; animation-delay: 0.2s; }
+  .music-btn .bars span:nth-child(3){ height: 65%; animation-delay: 0.4s; }
+  @keyframes bar{
+    0%, 100%{ transform: scaleY(0.4); }
+    50%{ transform: scaleY(1); }
+  }
+  .paused .bars span{ animation-play-state: paused; transform: scaleY(0.4); }
+
+  /* --- tap to start overlay (autoplay fallback) --- */
+  .tap-veil{
+    position:fixed;
+    inset:0;
+    z-index: 20;
+    background: rgba(17,20,28,0.88);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-direction:column;
+    gap: 0.8rem;
+    cursor:pointer;
+    transition: opacity 0.6s ease;
+  }
+  .tap-veil.hidden{
+    opacity:0;
+    pointer-events:none;
+  }
+  .tap-veil p{
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    color: var(--snow);
+    font-size: 1.1rem;
+    letter-spacing: 0.05em;
+    text-align:center;
+    padding: 0 2rem;
+  }
+  .tap-veil .heart{
+    font-size: 1.6rem;
+    color: var(--blush);
+    animation: pulse 1.6s ease-in-out infinite;
+  }
+  @keyframes pulse{
+    0%, 100%{ transform: scale(1); opacity: 0.8; }
+    50%{ transform: scale(1.15); opacity: 1; }
+  }
+
+  /* --- secret button --- */
+  .secret-btn{
+    position: fixed;
+    top: calc(18px + env(safe-area-inset-top, 0px));
+    left: calc(18px + env(safe-area-inset-left, 0px));
+    z-index: 10;
+    width: 34px;
+    height: 34px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--snow-dim);
+    font-size: 1rem;
+    opacity: 0.18;
+    transition: opacity 0.4s ease, transform 0.4s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .secret-btn:hover,
+  .secret-btn:focus-visible{
+    opacity: 0.75;
+    transform: rotate(90deg);
+  }
+
+  @media (hover: none){
+    .secret-btn{ opacity: 0.28; }
+  }
+
+  @media (max-width: 480px){
+    .content{ padding: 3vh 4vw; }
+    .letter{
+      padding: 2.2rem 1.5rem 1.9rem;
+      max-height: 82dvh;
+      border-radius: 3px;
+    }
+    .eyebrow{ font-size: 0.62rem; margin-bottom: 1.1rem; }
+    .message{ font-size: 1.3rem; line-height: 1.5; }
+    .cats{ width: 96px; }
+    .cats-wrap{ margin-bottom: 1.2rem; }
+    .divider{ margin-bottom: 1.4rem; }
+    .signature{ margin-top: 1.4rem; font-size: 0.78rem; }
+    .music-btn{
+      width: 46px;
+      height: 46px;
+      bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+      right: calc(16px + env(safe-area-inset-right, 0px));
+    }
+    .tap-veil p{ font-size: 1rem; padding: 0 1.4rem; }
+  }
+
+  @media (max-width: 360px){
+    .message{ font-size: 1.18rem; }
+    .cats{ width: 84px; }
+  }
+
+  @media (max-height: 620px){
+    .letter{ padding-top: 1.8rem; max-height: 90dvh; }
+    .cats{ width: 80px; }
+    .cats-wrap{ margin-bottom: 0.9rem; }
+    .eyebrow{ margin-bottom: 0.9rem; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .flake, .cats, .heart{ animation: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<a href="vaporwave.html" class="secret-btn" aria-label="✦">✦</a>
+
+<div class="tap-veil" id="tapVeil">
+  <div class="heart">♥</div>
+  <p>toca para entrar</p>
+</div>
+
+<div class="scene">
+  <img class="bg" src="nieve.png" alt="">
+  <div class="bg-veil"></div>
+  <div class="snowfall" id="snowfall"></div>
+
+  <div class="content">
+    <div class="letter">
+      <p class="eyebrow">una noche de nieve</p>
+      <div class="cats-wrap">
+        <img class="cats" src="gatos.png" alt="dos gatos y un corazón">
+      </div>
+      <div class="divider"></div>
+      <p class="message"></p>
+      <p class="signature">con cariño</p>
+    </div>
+  </div>
+</div>
+
+<button class="music-btn" id="musicBtn" aria-label="Pausar música">
+  <div class="bars"><span></span><span></span><span></span></div>
+</button>
+
+<audio id="song" src="cancion.mp3" loop preload="auto"></audio>
+
+<script>
+  // snow
+  const field = document.getElementById('snowfall');
+  const total = window.innerWidth < 420 ? 30 : (window.innerWidth < 600 ? 45 : 80);
+  for(let i=0;i<total;i++){
+    const f = document.createElement('div');
+    f.className = 'flake';
+    const size = Math.random()*3.5 + 1.5;
+    f.style.width = size+'px';
+    f.style.height = size+'px';
+    f.style.left = Math.random()*100+'vw';
+    const duration = Math.random()*8 + 7;
+    f.style.animationDuration = duration+'s';
+    f.style.animationDelay = (Math.random()*-duration)+'s';
+    f.style.setProperty('--drift', (Math.random()*80-40)+'px');
+    f.style.opacity = Math.random()*0.5+0.4;
+    field.appendChild(f);
+  }
+
+  // audio
+  const song = document.getElementById('song');
+  const btn = document.getElementById('musicBtn');
+  const tapVeil = document.getElementById('tapVeil');
+
+  function startMusic(){
+    song.play().then(()=>{
+      tapVeil.classList.add('hidden');
+      btn.classList.remove('paused');
+    }).catch(()=>{
+      // autoplay bloqueado, se necesita interacción
+    });
+  }
+
+  // intento de autoplay inmediato
+  startMusic();
+
+  // si el navegador lo bloquea, el primer toque en cualquier parte lo activa
+  tapVeil.addEventListener('click', ()=>{
+    startMusic();
+  });
+  document.body.addEventListener('click', function firstInteraction(){
+    if(song.paused) return;
+    startMusic();
+  }, { once: true });
+
+  btn.addEventListener('click', (e)=>{
+    e.stopPropagation();
+    if(song.paused){
+      song.play();
+      btn.classList.remove('paused');
+    } else {
+      song.pause();
+      btn.classList.add('paused');
+    }
+  });
+
+  song.addEventListener('play', ()=>{
+    tapVeil.classList.add('hidden');
+    btn.classList.remove('paused');
+  });
+</script>
+
+</body>
+</html>
